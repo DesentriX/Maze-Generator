@@ -8,7 +8,7 @@
 
 # Project structure
 - public/: Contains static assets.
-- src/styles/: CSS files.
+- src/style/: CSS files.
 - src/utils/: Contains javascript with maze generation Logic.
 - src/: Main entry points and app configuration.
 
