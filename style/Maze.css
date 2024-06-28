@@ -1,0 +1,48 @@
+
+
+.maze-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .generate-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  .generate-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .maze {
+    display: grid;
+    gap: 0px;
+    margin-top: 1px;
+  }
+  
+  .row {
+    display: flex;
+  }
+  
+  .cell {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .cell.wall {
+    background-color: black;
+  }
+  
+  .cell.passage {
+    background-color: white;
+  }
+  
