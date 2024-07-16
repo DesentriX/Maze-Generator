@@ -1,4 +1,4 @@
-# Technical-Challenge
+# Maze Generator
 # Name: Timi Joshua Soetan
 
 
