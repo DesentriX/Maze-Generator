@@ -5,7 +5,7 @@ import './style/Maze.css';
 const App = () => {
   return (
     <div className="App">
-      <h1>Technical Challenge</h1>
+      <h1>Maze</h1>
       <Maze /> 
     </div>
   );
