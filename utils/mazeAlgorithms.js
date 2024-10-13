@@ -1,36 +1,53 @@
-export const generateSolvableMaze = (width, height) => {
-    const maze = Array.from({ length: height }, () => Array(width).fill('wall')); // Initializes a grid filled with 'wall' type
-  
-    const carvePassages = (cx, cy) => {
-      const directions = [
-        [0, -2],  // Up
-        [0, 2],   // Down
-        [-2, 0],  // Left
-        [2, 0]    // Right
-      ];
-  
-      directions.sort(() => Math.random() - 0.5); // Shuffle directions
-  
-      for (let [dx, dy] of directions) { // iterates over each element in the directions array
-        const Newx = cx + dx; // represent the cell to move to from the current cell
-        const Newy = cy + dy;
-  
+export const generateSolvableMaze = (width, height, startX = 1, startY = 0, endX = width - 2, endY = height - 1) => {
+  const maze = Array.from({ length: height }, () => Array(width).fill('wall')); // Initialize the grid with 'wall'
+
+  //shuffle directions
+  const shuffleArray = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+  };
+
+  // Carve passages using DFS
+  const carvePassages = (startX, startY) => {
+    const stack = [[startX, startY]];
+    const directions = [
+      [0, -2],  // Up
+      [0, 2],   // Down
+      [-2, 0],  // Left
+      [2, 0]    // Right
+    ];
+
+    while (stack.length > 0) {
+      const [cx, cy] = stack.pop();
+      shuffleArray(directions); // Shuffle directions
+
+      for (let [dx, dy] of directions) {
+        const newX = cx + dx;
+        const newY = cy + dy;
+
+        // Check if the move is within bounds and the target cell is still a wall
         if (
-          Newx >= 0 && Newx < width && // Checks if within bounds
-          Newy >= 0 && Newy < height &&
-          maze[Newy][Newx] === 'wall'  // Checks if the new cell is still a wall
+          newX >= 0 && newX < width &&
+          newY >= 0 && newY < height &&
+          maze[newY][newX] === 'wall'
         ) {
-          maze[cy + dy / 2][cx + dx / 2] = 'passage'; // Carves path
-          maze[Newy][Newx] = 'passage'; // Mark the cell as 'passage'
-          carvePassages(Newx, Newy); // Recurse into the new cell
+          // Carve passage between current cell and new cell
+          maze[cy + dy / 2][cx + dx / 2] = 'passage';
+          maze[newY][newX] = 'passage';
+          stack.push([newX, newY]); // Add the new cell to the stack
         }
       }
-    };
-  
-    maze[1][0] = 'passage'; // Start carving from (1, 0)/ start of the maze
-    maze[13][14] = 'passage' // Exit of the maze
-    carvePassages(1, 1); // Start carving passages
-  
-    return maze; // Returns the generated maze
+    }
   };
-  
+
+  // Set the start and end points dynamically
+  maze[startY][startX] = 'passage'; // Start position
+  maze[endY][endX] = 'passage';     // End position
+
+  // Start carving from the first passage
+  carvePassages(startX, startY + 1); // Start carving inside the maze
+
+  return maze; 
+};
